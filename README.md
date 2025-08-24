@@ -7,10 +7,7 @@ A robust RESTful API for cinema ticket booking system built with NestJS, TypeORM
 - [Features](#features)
 - [Architecture Overview](#architecture-overview)
 - [Technology Stack](#technology-stack)
-<<<<<<< HEAD
 - [Design Assumptions & Trade-offs](#design-assumptions--trade-offs)
-=======
->>>>>>> adb71e20fb106875096a8a0251590ceb2ba77165
 - [System Architecture](#system-architecture)
 - [Database Schema](#database-schema)
 - [Business Logic Flow](#business-logic-flow)
@@ -76,11 +73,35 @@ This project follows **Clean Architecture principles** with clear separation of 
 | **Swagger**    | API Documentation         | ^11.2.0   |
 | **Jest**       | Testing Framework         | ^29.7.0   |
 
-<<<<<<< HEAD
 ## 📝 Design Assumptions & Trade-offs
 
 During development, several design decisions were made where requirements were not explicitly specified or where trade-offs were necessary for optimal system design.
 
+### 🏗️ **Architectural Assumptions**
+
+#### **1. UUID vs Auto-Increment IDs**
+
+**Decision**: All entities use UUIDs instead of sequential integers
+
+- **Rationale**: Enhanced security, prevents enumeration attacks, enables better distributed systems support
+- **Trade-off**: Slightly larger storage footprint vs improved security and scalability
+- **Impact**: More secure API endpoints, eliminates predictable ID guessing
+
+#### **2. Repository Pattern Implementation**
+
+**Decision**: Implement Repository Pattern with interface abstraction
+
+- **Rationale**: Better testability, database abstraction, follows SOLID principles
+- **Trade-off**: Additional complexity vs improved maintainability and testability
+- **Impact**: Easier unit testing, ability to swap data sources, cleaner service layer
+
+#### **3. Pessimistic Locking for Ticket Sales**
+
+**Decision**: Use pessimistic database locks during ticket purchase
+
+- **Rationale**: Guarantees consistency in high-concurrency scenarios, prevents overselling
+- **Trade-off**: Potential performance impact vs absolute data consistency
+- **Impact**: 100% reliable anti-overselling protection, may reduce throughput under extreme load
 
 ### 🎯 **Business Logic Assumptions**
 
@@ -92,6 +113,111 @@ During development, several design decisions were made where requirements were n
 - **Alternative**: Numerical-only seats (1, 2, 3...)
 - **Trade-off**: More complex validation vs user-friendly seat identification
 
+#### **5. Pricing Model**
+
+**Assumption**: Ticket prices are set per showtime, not per individual seat
+
+- **Rationale**: Simplifies pricing logic, common in most cinemas
+- **Alternative**: Variable pricing per seat (VIP, regular, etc.)
+- **Trade-off**: Simpler implementation vs granular pricing flexibility
+
+#### **6. Movie Release Date Validation**
+
+**Assumption**: Movies cannot have release dates more than 6 months in the future
+
+- **Rationale**: Practical business constraint, prevents unrealistic future dates
+- **Alternative**: No future date limit or different time horizon
+- **Trade-off**: Business logic constraint vs maximum flexibility
+
+#### **7. Showtime End Time Calculation**
+
+**Assumption**: End times are automatically calculated based on movie duration
+
+- **Rationale**: Prevents human error, ensures scheduling consistency
+- **Alternative**: Manual end time entry
+- **Trade-off**: Less flexibility vs guaranteed accuracy
+
+### 🗄️ **Data Management Assumptions**
+
+#### **8. Soft Delete for Critical Entities**
+
+**Assumption**: Cancelled tickets change status rather than being deleted
+
+- **Rationale**: Maintains audit trail, enables business analytics, prevents data loss
+- **Alternative**: Hard deletion to save storage space
+- **Trade-off**: Increased storage usage vs complete historical data preservation
+
+#### **9. Capacity Constraints**
+
+**Assumptions**:
+
+- Maximum theater capacity: 1000 seats
+- Maximum movie duration: 600 minutes (10 hours)
+- Minimum values: 1 seat, 1 minute
+- **Rationale**: Realistic business constraints, prevents system abuse
+- **Trade-off**: Imposed limitations vs protection against invalid data
+
+#### **10. Email Validation Strategy**
+
+**Assumption**: Standard regex-based email validation for customer emails
+
+- **Rationale**: Balance between validation strictness and user convenience
+- **Alternative**: More strict validation requiring email verification
+- **Trade-off**: User convenience vs email deliverability guarantee
+
+### ⚡ **Performance Trade-offs**
+
+#### **11. Pagination Strategy**
+
+**Decision**: Offset-based pagination (LIMIT/OFFSET)
+
+- **Rationale**: Simple implementation, works well for moderate datasets
+- **Alternative**: Cursor-based pagination for larger datasets
+- **Trade-off**: Simpler implementation vs optimal performance for large datasets
+
+#### **12. Database Relationships**
+
+**Decision**: Use TypeORM relationships with lazy loading
+
+- **Rationale**: Cleaner code, automatic relationship management
+- **Trade-off**: Potential N+1 queries vs cleaner entity models
+- **Mitigation**: Strategic use of `relations` parameter in queries
+
+#### **13. Transaction Scope**
+
+**Decision**: Minimal transaction scope, only for critical operations
+
+- **Rationale**: Reduces lock contention, improves performance
+- **Alternative**: Broader transaction scopes for stronger consistency
+- **Trade-off**: Performance vs absolute consistency for non-critical operations
+
+### 🔒 **Security Trade-offs**
+
+#### **14. Authentication Strategy**
+
+**Assumption**: No authentication system implemented (focuses on business logic)
+
+- **Rationale**: Project scope focused on core booking functionality
+- **Production Note**: Would require JWT/session-based auth for production use
+- **Trade-off**: Simplified development vs production security requirements
+
+#### **15. Rate Limiting**
+
+**Assumption**: No rate limiting implemented
+
+- **Rationale**: Development simplicity, not specified in requirements
+- **Production Note**: Would require rate limiting for production deployment
+- **Trade-off**: Development speed vs protection against abuse
+
+### 🧪 **Testing Strategy Assumptions**
+
+#### **16. Test Coverage Priority**
+
+**Assumption**: Focus on business logic testing over integration tests
+
+- **Rationale**: Repository pattern enables effective unit testing of business rules
+- **Alternative**: Comprehensive integration testing
+- **Trade-off**: Faster test execution vs full system coverage
 
 ### 📈 **Scalability Considerations**
 
@@ -131,8 +257,6 @@ During development, several design decisions were made where requirements were n
 
 These design decisions were made to create a robust, maintainable system that balances performance, security, and development velocity while following industry best practices.
 
-=======
->>>>>>> adb71e20fb106875096a8a0251590ceb2ba77165
 ## 🏛️ System Architecture
 
 ```mermaid
