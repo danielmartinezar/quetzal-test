@@ -7,7 +7,10 @@ A robust RESTful API for cinema ticket booking system built with NestJS, TypeORM
 - [Features](#features)
 - [Architecture Overview](#architecture-overview)
 - [Technology Stack](#technology-stack)
+<<<<<<< HEAD
 - [Design Assumptions & Trade-offs](#design-assumptions--trade-offs)
+=======
+>>>>>>> adb71e20fb106875096a8a0251590ceb2ba77165
 - [System Architecture](#system-architecture)
 - [Database Schema](#database-schema)
 - [Business Logic Flow](#business-logic-flow)
@@ -73,6 +76,7 @@ This project follows **Clean Architecture principles** with clear separation of 
 | **Swagger**    | API Documentation         | ^11.2.0   |
 | **Jest**       | Testing Framework         | ^29.7.0   |
 
+<<<<<<< HEAD
 ## 📝 Design Assumptions & Trade-offs
 
 During development, several design decisions were made where requirements were not explicitly specified or where trade-offs were necessary for optimal system design.
@@ -127,6 +131,8 @@ During development, several design decisions were made where requirements were n
 
 These design decisions were made to create a robust, maintainable system that balances performance, security, and development velocity while following industry best practices.
 
+=======
+>>>>>>> adb71e20fb106875096a8a0251590ceb2ba77165
 ## 🏛️ System Architecture
 
 ```mermaid
