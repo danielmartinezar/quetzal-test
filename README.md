@@ -20,6 +20,113 @@ A robust RESTful API for cinema ticket booking system built with NestJS, TypeORM
 - [Core Business Rules](#core-business-rules)
 - [Library Choices](#library-choices)
 
+## 🚀 Installation & Setup
+
+### Method 1: Docker (Recommended)
+
+```bash
+# 1. Clone the repository
+git clone <repository-url>
+cd cinema-booking-system
+
+# 2. Create environment file
+cp .env.example .env
+
+# 3. Build and run with Docker Compose
+docker-compose up --build
+
+# 4. Run database migrations (in another terminal)
+docker-compose exec app npm run migration:run
+
+# 5. Seed the database with sample data
+docker-compose exec app npm run db:seed
+```
+
+### Method 2: Local Development
+
+```bash
+# 1. Clone and install dependencies
+git clone <repository-url>
+cd cinema-booking-system
+npm install
+
+# 2. Setup PostgreSQL database locally
+# Ensure PostgreSQL is running on localhost:5432
+
+# 3. Create environment file
+cp .env.example .env
+
+# 4. Run migrations and seed data
+npm run migration:run
+npm run db:seed
+
+# 5. Start the development server
+npm run dev
+```
+
+## 🌍 Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+# Database Configuration
+DB_HOST=localhost                 # Use 'db' for Docker
+DB_PORT=5432
+DB_USERNAME=admin
+DB_PASSWORD=admin
+DB_DATABASE=cinema_db
+
+# Application Configuration
+NODE_ENV=development
+PORT=3000
+```
+
+### Docker Compose Services
+
+The `docker-compose.yml` includes:
+
+| Service | Description         | Port |
+| ------- | ------------------- | ---- |
+| **app** | NestJS Application  | 3000 |
+| **db**  | PostgreSQL Database | 5432 |
+
+**Volumes:**
+
+- `db_data`: Persistent database storage
+- `./:/usr/src/app`: Live code reloading for development
+
+## 📜 Scripts
+
+### Development Scripts
+
+```bash
+npm run dev              # Start development server with hot reload
+npm run build           # Build the application
+npm run start           # Start production server
+npm run start:prod      # Start optimized production server
+```
+
+### Database Scripts
+
+```bash
+npm run migration:generate -- MigrationName  # Generate new migration
+npm run migration:run                        # Run pending migrations
+npm run migration:revert                     # Revert last migration
+npm run migration:show                       # Show migration status
+npm run schema:drop                          # Drop entire schema
+npm run db:seed                             # Seed database with sample data
+```
+
+### Docker Scripts
+
+```bash
+docker-compose up --build    # Build and start all services
+docker-compose down          # Stop all services
+docker-compose logs app      # View application logs
+docker-compose logs db       # View database logs
+```
+
+
 ## ✨ Features
 
 - **Movies Management**: Full CRUD operations for movie catalog
@@ -482,126 +589,22 @@ src/
 - **Docker** & **Docker Compose**
 - **Git**
 
-## 🚀 Installation & Setup
-
-### Method 1: Docker (Recommended)
-
-```bash
-# 1. Clone the repository
-git clone <repository-url>
-cd cinema-booking-system
-
-# 2. Create environment file
-cp .env.example .env
-
-# 3. Build and run with Docker Compose
-docker-compose up --build
-
-# 4. Run database migrations (in another terminal)
-docker-compose exec app npm run migration:run
-
-# 5. Seed the database with sample data
-docker-compose exec app npm run db:seed
-```
-
-### Method 2: Local Development
-
-```bash
-# 1. Clone and install dependencies
-git clone <repository-url>
-cd cinema-booking-system
-npm install
-
-# 2. Setup PostgreSQL database locally
-# Ensure PostgreSQL is running on localhost:5432
-
-# 3. Create environment file
-cp .env.example .env
-
-# 4. Run migrations and seed data
-npm run migration:run
-npm run db:seed
-
-# 5. Start the development server
-npm run dev
-```
-
-## 🌍 Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-# Database Configuration
-DB_HOST=localhost                 # Use 'db' for Docker
-DB_PORT=5432
-DB_USERNAME=admin
-DB_PASSWORD=admin
-DB_DATABASE=cinema_db
-
-# Application Configuration
-NODE_ENV=development
-PORT=3000
-```
-
-### Docker Compose Services
-
-The `docker-compose.yml` includes:
-
-| Service | Description         | Port |
-| ------- | ------------------- | ---- |
-| **app** | NestJS Application  | 3000 |
-| **db**  | PostgreSQL Database | 5432 |
-
-**Volumes:**
-
-- `db_data`: Persistent database storage
-- `./:/usr/src/app`: Live code reloading for development
-
-## 📜 Scripts
-
-### Development Scripts
-
-```bash
-npm run dev              # Start development server with hot reload
-npm run build           # Build the application
-npm run start           # Start production server
-npm run start:prod      # Start optimized production server
-```
-
-### Database Scripts
-
-```bash
-npm run migration:generate -- MigrationName  # Generate new migration
-npm run migration:run                        # Run pending migrations
-npm run migration:revert                     # Revert last migration
-npm run migration:show                       # Show migration status
-npm run schema:drop                          # Drop entire schema
-npm run db:seed                             # Seed database with sample data
-```
-
-### Docker Scripts
-
-```bash
-docker-compose up --build    # Build and start all services
-docker-compose down          # Stop all services
-docker-compose logs app      # View application logs
-docker-compose logs db       # View database logs
-```
-
-### Testing Scripts
-
-```bash
-npm run test            # Run unit tests
-npm run test:watch      # Run tests in watch mode
-npm run test:cov        # Run tests with coverage
-npm run test:e2e        # Run end-to-end tests
-```
-
 ## 📖 API Documentation
 
-Once the application is running, access the interactive API documentation:
+Once the application is running, access the comprehensive API documentation:
+
+### **📚 Interactive API Documentation**
 
 **Swagger UI**: http://localhost:3000/api/docs
+
+The Swagger documentation includes:
+
+- **📋 Complete API Reference** - All endpoints with request/response examples
+- **🎯 Interactive Testing** - Test endpoints directly from the browser
+- **📝 Schema Documentation** - Detailed DTO and entity definitions
+- **🔍 Filtering & Pagination** - Examples of query parameters
+- **⚠️ Business Rules** - Validation requirements and constraints
+- **🎨 Organized by Tags** - Endpoints grouped by domain (Movies, Theaters, etc.)
 
 ### Key Endpoints
 
@@ -610,15 +613,53 @@ Once the application is running, access the interactive API documentation:
 | **Movies**    | `GET /movies`                             | List movies with pagination/filters |
 |               | `POST /movies`                            | Create new movie                    |
 |               | `GET /movies/:id`                         | Get movie details                   |
+|               | `GET /movies/active`                      | Get movies with upcoming showtimes  |
 | **Theaters**  | `GET /theaters`                           | List theaters with pagination       |
 |               | `POST /theaters`                          | Create new theater                  |
+|               | `GET /theaters/active`                    | Get active theaters only            |
 |               | `PATCH /theaters/:id/activate`            | Activate theater                    |
+|               | `PATCH /theaters/:id/deactivate`          | Deactivate theater                  |
 | **Showtimes** | `GET /showtimes`                          | List showtimes with filters         |
 |               | `POST /showtimes`                         | Create new showtime                 |
+|               | `GET /showtimes/upcoming`                 | Get upcoming showtimes              |
 |               | `GET /showtimes/:id/availability`         | Check seat availability             |
-| **Tickets**   | `POST /tickets/purchase/:showtimeId`      | Purchase ticket                     |
+|               | `GET /showtimes/by-movie/:movieId`        | Get showtimes for specific movie    |
+|               | `GET /showtimes/by-theater/:theaterId`    | Get showtimes for specific theater  |
+| **Tickets**   | `POST /tickets/purchase/:showtimeId`      | Purchase ticket (main endpoint)     |
+|               | `POST /tickets`                           | Alternative ticket creation         |
 |               | `GET /tickets/occupied-seats/:showtimeId` | Get occupied seats                  |
+|               | `GET /tickets/by-customer?email=`         | Get customer's tickets              |
+|               | `GET /tickets/by-showtime/:showtimeId`    | Get all tickets for showtime        |
 |               | `PATCH /tickets/:id/cancel`               | Cancel ticket                       |
+
+### **🧪 Testing the API**
+
+#### Quick Test Commands:
+
+```bash
+# Get API status
+curl http://localhost:3000/
+
+# List all movies
+curl http://localhost:3000/movies
+
+# Get theaters with pagination
+curl "http://localhost:3000/theaters?page=1&limit=5"
+
+# Check showtime availability
+curl http://localhost:3000/showtimes/{showtime-id}/availability
+
+# Purchase a ticket
+curl -X POST http://localhost:3000/tickets/purchase/{showtime-id} \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customer_name": "John Doe",
+    "customer_email": "john@example.com",
+    "seat_number": "A-1"
+  }'
+```
+
+The Swagger UI at `/api/docs` provides the most comprehensive way to explore and test all available endpoints with real-time validation and examples.
 
 ## ⚖️ Core Business Rules
 
